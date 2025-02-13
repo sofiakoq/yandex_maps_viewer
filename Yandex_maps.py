@@ -16,6 +16,36 @@ class MainWindow(QMainWindow):
         self.delta = 0.1
         self.map_ll = [37.621601, 55.753460]
         self.map_l = 'map'
+        self.theme = 'light'
+        self.map_type = 'map'
+        self.apikey = 'f3a0fe3a-b07e-4840-a1da-06f18b2ddf13'
+        self.refresh_map()
+        self.pushButton_5.clicked.connect(self.change_theme)
+        self.pushButton.clicked.connect(self.search)
+        self.pushButton_2.clicked.connect(self.set_map)
+        self.pushButton_3.clicked.connect(self.set_sat)
+        self.pushButton_4.clicked.connect(self.set_hybrid)
+
+    def search(self):
+        pass
+
+    def set_map(self):
+        self.map_type = 'map'
+        self.refresh_map()
+
+    def set_sat(self):
+        self.map_type = 'driving'
+        self.refresh_map()
+
+    def set_hybrid(self):
+        self.map_type = 'transit'
+        self.refresh_map()
+
+    def change_theme(self):
+        if self.theme == 'light':
+            self.theme = 'dark'
+        else:
+            self.theme = 'light'
         self.refresh_map()
 
     def keyPressEvent(self, event):
@@ -37,7 +67,10 @@ class MainWindow(QMainWindow):
         map_params = {
             "ll": ','.join(map(str, self.map_ll)),
             "l": self.map_l,
-            "z": self.map_zoom
+            "z": self.map_zoom,
+            "theme": self.theme,
+            "apikey": self.apikey,
+            "maptype": self.map_type
         }
         response = requests.get(self.api_srver, params=map_params)
         if not response:
