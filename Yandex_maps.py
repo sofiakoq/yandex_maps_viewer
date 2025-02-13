@@ -18,6 +18,21 @@ class MainWindow(QMainWindow):
         self.map_l = 'map'
         self.refresh_map()
 
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key.Key_PageUp and self.map_zoom <= 20:
+            self.map_zoom += 1
+        if event.key() == Qt.Key.Key_PageDown and self.map_zoom > 0:
+            self.map_zoom -= 1
+        if event.key() == Qt.Key.Key_A:
+            self.map_ll[0] -= self.delta
+        if event.key() == Qt.Key.Key_D:
+            self.map_ll[0] += self.delta
+        if event.key() == Qt.Key.Key_W:
+            self.map_ll[1] += self.delta
+        if event.key() == Qt.Key.Key_S:
+            self.map_ll[1] -= self.delta
+        self.refresh_map()
+
     def refresh_map(self):
         map_params = {
             "ll": ','.join(map(str, self.map_ll)),
